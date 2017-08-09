@@ -1,0 +1,80 @@
+---
+
+# deploy ssh key and make sudo work without password
+
+# install 'sshpass' package first on your local system
+
+# ssh -o UserKnownHostsFile=./known_hosts <user>@<host>
+# ansible all --ask-pass --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -m ping -i <host>, -u <username>
+#                                                                                               ^^^ the comma is required
+# ansible-playbook -i <host>, -u <username> --ask-pass --ask-become-pass --ssh-common-args='-o UserKnownHostsFile=./known_hosts' install-ansible-prereqs.yml
+#                          ^^^ the comma is required
+# rm -f ./known_hosts
+
+- hosts: all
+  become: no
+  gather_facts: False
+  tasks:
+    - name: create ssh directory
+      file: path=.ssh state=directory mode=0700
+
+    # this will OVERWRITE existing ssh keys!
+    - name: install ssh key
+      copy: src=~/.ssh/id_rsa.pub dest=.ssh/authorized_keys mode=0700
+
+
+# FIXME: Debian versus Red Hat
+- hosts: all
+  # will be selected on a per-task basis, to accomodate different methods
+  become: no
+  tasks:
+    - block:
+      - name: install sudo (Red Hat)
+        yum: name={{ item }} state=present
+        with_items:
+          - sudo
+        become: true
+        become_method: su
+        become_user: root
+
+      - name: add user to 'wheel' group (Red Hat)
+        user:
+          name: "{{ ansible_user }}"
+          group: wheel
+        become: true
+        become_method: su
+        become_user: root
+
+      - name: add group to /etc/sudoers file without password (Red Hat)
+        # this will overwrite the first line which starts with %wheel
+        lineinfile: "dest=/etc/sudoers state=present regexp='^%wheel' line='%wheel ALL=(ALL) NOPASSWD: ALL'"
+        become: true
+        become_method: sudo
+        become_user: root
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+    - block:
+      - name: install sudo (Debian)
+        apt: name={{ item }} state=present
+        with_items:
+          - sudo
+        become: true
+        become_method: su
+        become_user: root
+
+      - name: add user to 'sudo' group (Debian)
+        user:
+          name: "{{ ansible_user }}"
+          group: sudo
+        become: true
+        become_method: su
+        become_user: root
+
+      - name: add group to /etc/sudoers file without password (Debian)
+        # this will overwrite the first line which starts with %sudo
+        lineinfile: "dest=/etc/sudoers state=present regexp='^%sudo' line='%sudo ALL=(ALL) NOPASSWD: ALL'"
+        become: true
+        become_method: su
+        become_user: root
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
