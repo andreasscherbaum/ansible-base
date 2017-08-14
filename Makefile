@@ -49,7 +49,7 @@ common:
 ifneq  (,$(wildcard roles/common))
 	cd roles/common && git pull
 else
-	git clone https://github.com/andreasscherbaum/ansible-base.git roles/common
+	git clone https://github.com/andreasscherbaum/ansible-common.git roles/common
 endif
 
 
