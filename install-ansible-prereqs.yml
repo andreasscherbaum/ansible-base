@@ -78,3 +78,16 @@
         become_user: root
       when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
+    - name: create .bash_history if not exist
+      copy:
+        dest: /home/{{ ansible_user }}/.bash_history
+        content: ""
+        force: no
+      become: false
+
+    - name: add sudo line to bash history
+      lineinfile:
+        dest: /home/{{ ansible_user }}/.bash_history
+        line: "sudo /bin/bash --login"
+        state: "present"
+      become: false
