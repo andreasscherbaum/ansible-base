@@ -48,6 +48,12 @@ update:
 	ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -i ${IP}, -u ${USERNAME} update-host.yml
 
 
+# https://stackoverflow.com/questions/4219255/how-do-you-get-the-list-of-targets-in-a-makefile
+no_targets__:
+role-update:
+	sh -c "$(MAKE) -p no_targets__ | awk -F':' '/^[a-zA-Z0-9][^\$$#\/\\t=]*:([^=]|$$)/ {split(\$$1,A,/ /);for(i in A)print A[i]}' | grep -v '__\$$' | grep '^ansible-update-*'" | xargs -n 1 make --no-print-directory
+
+
 ssh:
 	ssh -o UserKnownHostsFile=./known_hosts ${USERNAME}@${IP}
 
@@ -64,4 +70,4 @@ clean:
 	rm -rf ./known_hosts install-host.yml update-host.yml
 
 
-.PHONY:	all init install update ssh common clean
+.PHONY:	all init install update ssh common clean no_targets__ role-update
