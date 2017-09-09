@@ -14,17 +14,17 @@ available-roles:
 common:
 ifneq  (,$(wildcard roles/common))
 	cd roles/common && git pull
-	ln -s roles/common/ansible.mk ansible-common.mk
 else
 	git clone https://github.com/andreasscherbaum/ansible-common.git roles/common
+	ln -s roles/common/ansible.mk ansible-common.mk
 endif
 
 
 gpdb:
 ifneq  (,$(wildcard roles/gpdb-ansible))
 	cd roles/gpdb-ansible && git pull
-	ln -s roles/gpdb-ansible/ansible.mk ansible-gpdb-ansible.mk
 else
 	git clone https://github.com/andreasscherbaum/gpdb-ansible.git roles/gpdb-ansible
+	ln -s roles/gpdb-ansible/ansible.mk ansible-gpdb-ansible.mk
 endif
 
