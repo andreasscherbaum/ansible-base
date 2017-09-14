@@ -11,8 +11,8 @@ available-roles:
 	@echo "		https://github.com/andreasscherbaum/gpdb-ansible"
 	@echo "gluon:		build Freifunk gluon images"
 	@echo "		https://github.com/Freifunk-Oberhavel/ansible-gluon"
-	@echo "lxc:		create LXC/LXD containers"
-	@echo "		https://github.com/andreasscherbaum/ansible-lxc"
+	@echo "lxd:		create LXC/LXD containers"
+	@echo "		https://github.com/andreasscherbaum/ansible-lxd"
 
 
 common:
@@ -42,10 +42,10 @@ else
 endif
 
 
-lxc:
-ifneq  (,$(wildcard roles/lxc))
-	cd roles/lxc && git pull
+lxd:
+ifneq  (,$(wildcard roles/lxd))
+	cd roles/lxd && git pull
 else
-	git clone https://github.com/andreasscherbaum/ansible-lxc.git roles/lxc
-	ln -s roles/lxc/ansible.mk ansible-lxc.mk
+	git clone https://github.com/andreasscherbaum/ansible-lxd.git roles/lxd
+	ln -s roles/lxd/ansible.mk ansible-lxd.mk
 endif
