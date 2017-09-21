@@ -13,6 +13,8 @@ available-roles:
 	@echo "		https://github.com/Freifunk-Oberhavel/ansible-gluon"
 	@echo "lxd:		create LXC/LXD containers"
 	@echo "		https://github.com/andreasscherbaum/ansible-lxd"
+	@echo "lxc-ssh:		Ansible connection plugin for LXD containers"
+	@echo "		https://github.com/andreasscherbaum/ansible-lxc-ssh.git"
 
 
 common:
@@ -48,4 +50,15 @@ ifneq  (,$(wildcard roles/lxd))
 else
 	git clone https://github.com/andreasscherbaum/ansible-lxd.git roles/lxd
 	ln -s roles/lxd/ansible.mk ansible-lxd.mk
+endif
+
+
+lxc-ssh:
+ifneq  (,$(wildcard connection_plugins/ansible-lxc-ssh))
+	cd connection_plugins/ansible-lxc-ssh && git pull
+else
+	mkdir -p connection_plugins
+	git clone https://github.com/andreasscherbaum/ansible-lxc-ssh.git connection_plugins/ansible-lxc-ssh
+	ln -s connection_plugins/ansible-lxc-ssh/ansible.mk ansible-lxc-ssh.mk
+	ln -s connection_plugins/ansible-lxc-ssh/lxc_ssh.py connection_plugins/lxc_ssh.py
 endif
