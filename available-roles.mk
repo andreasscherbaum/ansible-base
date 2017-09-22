@@ -15,6 +15,8 @@ available-roles:
 	@echo "		https://github.com/andreasscherbaum/ansible-lxd"
 	@echo "lxc-ssh:		Ansible connection plugin for LXD containers"
 	@echo "		https://github.com/andreasscherbaum/ansible-lxc-ssh.git"
+	@echo "buildclient:	Several Ansible roles for installing PG & GPDB Buildclient"
+	@echo "		https://github.com/andreasscherbaum/buildfarm-client"
 
 
 common:
@@ -61,4 +63,18 @@ else
 	git clone https://github.com/andreasscherbaum/ansible-lxc-ssh.git connection_plugins/ansible-lxc-ssh
 	ln -s connection_plugins/ansible-lxc-ssh/ansible.mk ansible-lxc-ssh.mk
 	ln -s connection_plugins/ansible-lxc-ssh/lxc_ssh.py connection_plugins/lxc_ssh.py
+endif
+
+
+buildclient:
+ifneq  (,$(wildcard roles/buildclient))
+	cd roles/epel && git pull
+	cd roles/gpdb5-dev && git pull
+	cd roles/git2 && git pull
+	cd roles/buildclient && git pull
+else
+	git clone https://github.com/geerlingguy/ansible-role-repo-epel.git roles/epel
+	git clone https://github.com/andreasscherbaum/ansible-gpdb5-dev roles/gpdb5-dev
+	git clone https://github.com/andreasscherbaum/ansible-git2.git roles/git2
+	git clone https://github.com/andreasscherbaum/ansible-buildclient.git roles/buildclient
 endif
