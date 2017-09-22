@@ -77,4 +77,5 @@ else
 	git clone https://github.com/andreasscherbaum/ansible-gpdb5-dev roles/gpdb5-dev
 	git clone https://github.com/andreasscherbaum/ansible-git2.git roles/git2
 	git clone https://github.com/andreasscherbaum/ansible-buildclient.git roles/buildclient
+	ln -s roles/buildclient/ansible.mk ansible-buildclient.mk
 endif
