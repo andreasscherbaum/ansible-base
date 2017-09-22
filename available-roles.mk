@@ -7,7 +7,7 @@ available-roles:
 	@echo ""
 	@echo "common:		a common Ansible role to install a host"
 	@echo "		https://github.com/andreasscherbaum/ansible-common"
-	@echo "gpdb:		an Ansible role to install Greenplum Database"
+	@echo "gpdb4:		an Ansible role to install Greenplum Database v4"
 	@echo "		https://github.com/andreasscherbaum/gpdb-ansible"
 	@echo "gluon:		build Freifunk gluon images"
 	@echo "		https://github.com/Freifunk-Oberhavel/ansible-gluon"
@@ -26,12 +26,12 @@ else
 endif
 
 
-gpdb:
-ifneq  (,$(wildcard roles/gpdb-ansible))
-	cd roles/gpdb-ansible && git pull
+gpdb4:
+ifneq  (,$(wildcard roles/gpdb4))
+	cd roles/gpdb4 && git pull
 else
-	git clone https://github.com/andreasscherbaum/gpdb-ansible.git roles/gpdb-ansible
-	ln -s roles/gpdb-ansible/ansible.mk ansible-gpdb-ansible.mk
+	git clone https://github.com/andreasscherbaum/gpdb-ansible.git roles/gpdb4
+	ln -s roles/gpdb4/ansible.mk ansible-gpdb4.mk
 endif
 
 
