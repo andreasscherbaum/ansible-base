@@ -7,7 +7,7 @@ available-roles:
 	@echo ""
 	@echo "common:		a common Ansible role to install a host"
 	@echo "		https://github.com/andreasscherbaum/ansible-common"
-	@echo "gpdb-ansible:	an Ansible role to install Greenplum Database"
+	@echo "gpdb:		an Ansible role to install Greenplum Database"
 	@echo "		https://github.com/andreasscherbaum/gpdb-ansible"
 	@echo "gluon:		build Freifunk gluon images"
 	@echo "		https://github.com/Freifunk-Oberhavel/ansible-gluon"
