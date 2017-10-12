@@ -62,7 +62,7 @@ else
 	mkdir -p connection_plugins
 	git clone https://github.com/andreasscherbaum/ansible-lxc-ssh.git connection_plugins/ansible-lxc-ssh
 	ln -s connection_plugins/ansible-lxc-ssh/ansible.mk ansible-lxc-ssh.mk
-	ln -s connection_plugins/ansible-lxc-ssh/lxc_ssh.py connection_plugins/lxc_ssh.py
+	cd connection_plugins && ln -s ansible-lxc-ssh/lxc_ssh.py lxc_ssh.py
 endif
 
 
