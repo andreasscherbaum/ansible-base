@@ -11,8 +11,10 @@ available-roles:
 	@echo "		https://github.com/andreasscherbaum/gpdb-ansible"
 	@echo "gluon:		build Freifunk gluon images"
 	@echo "		https://github.com/Freifunk-Oberhavel/ansible-gluon"
-	@echo "lxd:		create LXC/LXD containers"
+	@echo "lxd:		an Ansible role for installing LXD"
 	@echo "		https://github.com/andreasscherbaum/ansible-lxd"
+	@echo "lxd-container:	create LXC/LXD containers"
+	@echo "		https://github.com/andreasscherbaum/ansible-lxd-container"
 	@echo "lxc-ssh:		Ansible connection plugin for LXD containers"
 	@echo "		https://github.com/andreasscherbaum/ansible-lxc-ssh.git"
 	@echo "buildclient:	Several Ansible roles for installing PG & GPDB Buildclient"
@@ -52,6 +54,15 @@ ifneq  (,$(wildcard roles/lxd))
 else
 	git clone https://github.com/andreasscherbaum/ansible-lxd.git roles/lxd
 	ln -s roles/lxd/ansible.mk ansible-lxd.mk
+endif
+
+
+lxd-container:
+ifneq  (,$(wildcard roles/lxd-container))
+	cd roles/lxd-container && git pull
+else
+	git clone https://github.com/andreasscherbaum/ansible-lxd-container.git roles/lxd-container
+	ln -s roles/lxd-container/ansible.mk ansible-lxd-container.mk
 endif
 
 
