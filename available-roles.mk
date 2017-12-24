@@ -19,6 +19,8 @@ available-roles:
 	@echo "		https://github.com/andreasscherbaum/ansible-lxc-ssh.git"
 	@echo "buildclient:	Several Ansible roles for installing PG & GPDB Buildclient"
 	@echo "		https://github.com/andreasscherbaum/buildfarm-client"
+	@echo "bind9:		a bind9 role which also manages domains"
+	@echo "		https://github.com/andreasscherbaum/ansible-bind9"
 
 
 common:
@@ -89,4 +91,13 @@ else
 	git clone https://github.com/andreasscherbaum/ansible-git2.git roles/git2
 	git clone https://github.com/andreasscherbaum/ansible-buildclient.git roles/buildclient
 	ln -s roles/buildclient/ansible.mk ansible-buildclient.mk
+endif
+
+
+bind9:
+ifneq  (,$(wildcard roles/bind9))
+	cd roles/bind9 && git pull
+else
+	git clone https://github.com/andreasscherbaum/ansible-bind9.git roles/bind9
+	ln -s roles/bind9/ansible.mk ansible-bind9.mk
 endif
