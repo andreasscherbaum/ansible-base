@@ -15,8 +15,10 @@
 
     - name: Update apt cache (Debian)
       apt: update_cache=yes
+      changed_when: false
       when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
     - name: Upgrade server (Debian)
       apt: upgrade=dist
       when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
