@@ -33,11 +33,11 @@ endif
 
 
 gpdb4:
-ifneq  (,$(wildcard roles/gpdb4))
+ifneq  (,$(wildcard roles/gpdb-ansible))
 	cd roles/gpdb4 && git pull
 else
-	git clone https://github.com/andreasscherbaum/gpdb-ansible.git roles/gpdb4
-	ln -s roles/gpdb4/ansible.mk ansible-gpdb4.mk
+	git clone https://github.com/andreasscherbaum/gpdb-ansible.git roles/gpdb-ansible
+	ln -s roles/gpdb-ansible/ansible.mk ansible-gpdb-ansible.mk
 endif
 
 
