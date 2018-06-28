@@ -54,28 +54,54 @@
       when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
     - block:
-      - name: install sudo (Debian)
-        apt: name={{ item }} state=present
-        with_items:
-          - sudo
-        become: true
-        become_method: su
-        become_user: root
+      - name: read /etc/group entries
+        shell: "/usr/bin/getent group | grep ^sudo{{':'}} | cut -f4 -d{{':'}}"
+        register: etc_group
+        changed_when: false
 
-      - name: add user to 'sudo' group (Debian)
-        user:
-          name: "{{ ansible_user }}"
-          group: sudo
-        become: true
-        become_method: su
-        become_user: root
+      - name: Split group members
+        set_fact:
+          etc_group_members: "{{ etc_group.stdout.split(',') }}"
+        changed_when: false
 
-      - name: add group to /etc/sudoers file without password (Debian)
-        # this will overwrite the first line which starts with %sudo
-        lineinfile: "dest=/etc/sudoers state=present regexp='^%sudo' line='%sudo ALL=(ALL) NOPASSWD: ALL'"
-        become: true
-        become_method: su
-        become_user: root
+      - block:
+        # the current user is not in /etc/group in the sudo group
+        # we assume that 'su' works
+        - name: install sudo (Debian)
+          apt: name={{ item }} state=present
+          with_items:
+            - sudo
+          become: true
+          become_method: su
+          become_user: root
+
+        - name: add user to 'sudo' group (Debian)
+          user:
+            name: "{{ ansible_user }}"
+            group: sudo
+          become: true
+          become_method: su
+          become_user: root
+
+        - name: add group to /etc/sudoers file without password (Debian)
+          # this will overwrite the first line which starts with %sudo
+          lineinfile: "dest=/etc/sudoers state=present regexp='^%sudo' line='%sudo ALL=(ALL) NOPASSWD: ALL'"
+          become: true
+          become_method: su
+          become_user: root
+        when: ansible_user not in etc_group_members
+
+      - block:
+        # the current user is already in /etc/group in the sudo group
+        # we assume that 'sudo' works, but maybe with password
+        - name: add group to /etc/sudoers file without password (Debian)
+          # this will overwrite the first line which starts with %sudo
+          lineinfile: "dest=/etc/sudoers state=present regexp='^%sudo' line='%sudo ALL=(ALL) NOPASSWD: ALL'"
+          become: true
+          become_method: sudo
+          become_user: root
+        when: ansible_user in etc_group_members
+
       when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
     - name: create .bash_history if not exist
