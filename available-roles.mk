@@ -21,6 +21,8 @@ available-roles:
 	@echo "		https://github.com/andreasscherbaum/buildfarm-client"
 	@echo "bind9:		a bind9 role which also manages domains"
 	@echo "		https://github.com/andreasscherbaum/ansible-bind9"
+	@echo "jenkins:		a jenkins role which pulls in required roles"
+	@echo "		https://github.com/andreasscherbaum/ansible-jenkins"
 
 
 common:
@@ -100,4 +102,17 @@ ifneq  (,$(wildcard roles/bind9))
 else
 	git clone https://github.com/andreasscherbaum/ansible-bind9.git roles/bind9
 	ln -s roles/bind9/ansible.mk ansible-bind9.mk
+endif
+
+
+jenkins:
+ifneq  (,$(wildcard roles/jenkins))
+	cd roles/jenkins && git pull
+	cd roles/geerlingguy.java && git pull
+	cd roles/geerlingguy.jenkins && git pull
+else
+	git clone https://github.com/andreasscherbaum/ansible-jenkins.git roles/jenins
+	git clone https://github.com/geerlingguy/ansible-role-java.git roles/geerlingguy.java
+	git clone https://github.com/geerlingguy/ansible-role-jenkins.git roles/geerlingguy.jenkins
+	ln -s roles/jenkins/ansible.mk ansible-jenkins.mk
 endif
