@@ -111,7 +111,7 @@ ifneq  (,$(wildcard roles/jenkins))
 	cd roles/geerlingguy.java && git pull
 	cd roles/geerlingguy.jenkins && git pull
 else
-	git clone https://github.com/andreasscherbaum/ansible-jenkins.git roles/jenins
+	git clone https://github.com/andreasscherbaum/ansible-jenkins.git roles/jenkins
 	git clone https://github.com/geerlingguy/ansible-role-java.git roles/geerlingguy.java
 	git clone https://github.com/geerlingguy/ansible-role-jenkins.git roles/geerlingguy.jenkins
 	ln -s roles/jenkins/ansible.mk ansible-jenkins.mk
